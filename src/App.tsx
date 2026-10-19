@@ -1,10 +1,14 @@
+import type { ReactNode } from 'react';
+import { FaWhatsapp, FaInstagram } from 'react-icons/fa';
+import { PhoneCall } from 'lucide-react';
 import './App.css';
 
 interface SocialLink {
   id: number;
   title: string;
   url: string;
-  isPrimary?: boolean;
+  theme: 'whatsapp' | 'instagram' | 'phone';
+  icon: ReactNode;
 }
 
 interface DriverProfile {
@@ -31,17 +35,22 @@ export default function App() {
       id: 1,
       title: "Agendar Viagem via WhatsApp",
       url: "https://wa.me/5581991009304?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento%20de%20viagem%20particular.",
-      isPrimary: true
+      theme: 'whatsapp',
+      icon: <FaWhatsapp size={22} className="btn-icon" />
     },
     {
       id: 2,
       title: "Seguir no Instagram",
-      url: "https://instagram.com/D_transfer"
+      url: "https://instagram.com/dtransfer",
+      theme: 'instagram',
+      icon: <FaInstagram size={22} className="btn-icon" />
     },
     {
       id: 3,
       title: "Ligar Diretamente",
-      url: "tel:+5581991009304"
+      url: "tel:+5581991009304",
+      theme: 'phone',
+      icon: <PhoneCall size={20} className="btn-icon" />
     }
   ];
 
@@ -49,7 +58,20 @@ export default function App() {
     <main className="container">
       <div className="card">
         <div className="avatar-wrapper">
-          <img src={driver.avatarUrl} alt={`Foto de ${driver.name}`} className="avatar" />
+          <img 
+            src={driver.avatarUrl} 
+            alt={`Foto de ${driver.name}`} 
+            className="avatar"
+            style={{
+              width: '130px',
+              height: '130px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              border: '3px solid #d4af37',
+              display: 'block',
+              margin: '0 auto'
+            }}
+          />
         </div>
 
         <h1>{driver.name}</h1>
@@ -68,13 +90,15 @@ export default function App() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`btn-link ${link.isPrimary ? 'primary' : ''}`}
+              className={`btn-link btn-${link.theme}`}
             >
-              {link.title}
+              {link.icon}
+              <span>{link.title}</span>
             </a>
           ))}
         </div>
-          <footer>
+
+        <footer>
           <p>© {new Date().getFullYear()} {driver.name}. Todos os direitos reservados.</p>
         </footer>
       </div>
